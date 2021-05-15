@@ -26,7 +26,7 @@ while(True):
     total = 0.0;
     for i in range(5):
         amt_str = amount_strings[i].text
-        print(amt_str)
+
         sign = amt_str[0]
         text_start = amt_str[1:].find(' DOGE')
         amt = float(amt_str[1:text_start])
