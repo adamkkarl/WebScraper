@@ -3,9 +3,10 @@ import requests,  datetime, time, keyring
 from urllib.request import Request, urlopen
 from twilio.rest import Client
 
-
+check_num = 0
 while(True):
-    print("checking.....")
+    print("check", check_num)
+    check_num += 1
 
     # stress_test_wallet = 'https://bitinfocharts.com/dogecoin/address/DG2mPCnCPXzbwiqKpE1husv3FA9s5t1WMt'
     big_wallet = 'https://bitinfocharts.com/dogecoin/address/DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L'
