@@ -7,7 +7,10 @@ from twilio.rest import Client
 while(True):
     print("checking.....")
 
-    req = Request('https://bitinfocharts.com/dogecoin/address/DG2mPCnCPXzbwiqKpE1husv3FA9s5t1WMt', headers={'User-Agent': 'Mozilla/5.0'})
+    # stress_test_wallet = 'https://bitinfocharts.com/dogecoin/address/DG2mPCnCPXzbwiqKpE1husv3FA9s5t1WMt'
+    big_wallet = 'https://bitinfocharts.com/dogecoin/address/DH5yaieqoZN36fDVciNyRueRGvGLR3mr7L'
+
+    req = Request(big_wallet, headers={'User-Agent': 'Mozilla/5.0'})
     webpage = urlopen(req)
 
     # print(req.status_code)
@@ -17,17 +20,24 @@ while(True):
     # for c in content.find_all('td', attrs={"class": "text-error"}):
     #     print(c.text)
 
-    times = content.find_all('td', attrs={"class": "utc hidden-phone"})
-    latest = times[0].text[:-4]
-    fifth = times[5].text[:-4]
+    amount_strings = content.find_all('td', attrs={"class": "text-success"})
 
-    l = datetime.datetime.strptime(latest, '%Y-%m-%d %H:%M:%S')
-    f = datetime.datetime.strptime(fifth, '%Y-%m-%d %H:%M:%S')
-    difference = (l-f).total_seconds()
+    total = 0.0;
+    for i in range(5):
+        amt_str = amount_strings[i].text
+        print(amt_str)
+        sign = amt_str[0]
+        text_start = amt_str[1:].find(' DOGE')
+        amt = float(amt_str[1:text_start])
+        if sign == '+':
+            total += amt
+        elif sign == '-':
+            total -= amt
+        else:
+            print("unfound sign:", sign)
+            exit()
 
-    if difference/60 < 5:
-        # 5+ transactions in 5 mins
-
+    if total < 0: # more output than input over last 5 transactions
         #twilio id, not confidential
         account_sid = "ACdaa60d580e7f089ec6d04fc5583071ad"
 
